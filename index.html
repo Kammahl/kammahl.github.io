@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#060606">
-  <meta name="description" content="Kammahl — seu companheiro de jogos inteligente.">
+  <meta name="description" content="Kammahl — nunca mais jogue sozinho. Seu companheiro de jogos inteligente. Baixe a Beta pública para Windows x64.">
   <title>Kammahl — Seu companheiro de jogos inteligente</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
@@ -225,6 +225,23 @@
     .privacy li{display:flex;gap:12px;align-items:flex-start;color:#b6b6bb;line-height:1.55}
     .privacy li:before{content:"◆";color:var(--amber);font-size:10px;margin-top:5px}
 
+    .download-panel{
+      margin-top:34px;padding:28px;
+      border:1px solid var(--line);
+      background:linear-gradient(145deg,rgba(240,160,0,.06),rgba(10,10,11,.96));
+      clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+    }
+    .download-meta{
+      display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;
+      color:#9b9ba1;font-size:12px;margin:18px 0 0
+    }
+    .download-meta span{display:inline-flex;align-items:center;gap:7px}
+    .download-meta span:before{content:"◆";color:var(--amber);font-size:8px}
+    .release-link{
+      display:inline-block;margin-top:18px;color:var(--amber2);font-size:13px;
+      border-bottom:1px dotted rgba(240,160,0,.5)
+    }
+    .release-link:hover{color:#ffd676}
     .final{
       text-align:center;padding-bottom:130px
     }
@@ -281,7 +298,7 @@
         <a href="#como-funciona" data-i18n="nav_how">Como funciona</a>
         <a href="#privacidade" data-i18n="nav_privacy">Privacidade</a>
         <a href="#api" data-i18n="nav_api">Chave API</a>
-        <a class="nav-cta" href="#download" data-i18n="nav_project">Acompanhar projeto</a>
+        <a class="nav-cta" href="#download" data-i18n="nav_project">Download</a>
         <button class="lang-btn" id="langBtn" type="button" aria-label="Mudar idioma">PT / EN</button>
       </nav>
       <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
@@ -299,8 +316,8 @@
         <div class="subhead"><span data-i18n="slogan">Nunca mais jogue sozinho.</span><br><small data-i18n="tagline">Seu companheiro de jogos inteligente.</small></div>
         <p class="lead" data-i18n="hero_lead">Um assistente pensado para jogar ao seu lado: observa o contexto, lembra do que importa, entende sua evolução e ajuda você a tomar decisões sem tirar o controle das suas mãos.</p>
         <div class="actions">
-          <a class="btn primary" href="#recursos" data-i18n="hero_cta">Conhecer o Kammahl</a>
-          <a class="btn secondary" href="#download" data-i18n="hero_dev">Em desenvolvimento</a>
+          <a class="btn primary" href="https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip" data-i18n="hero_download">Baixar Kammahl Beta</a>
+          <a class="btn secondary" href="https://github.com/Kammahl/kammahl-downloads/releases/tag/v0.1.0-beta.1" target="_blank" rel="noopener" data-i18n="hero_release">Ver versão Beta</a>
         </div>
         <div class="status"><span class="pulse"></span> <span data-i18n="hero_status">Projeto em desenvolvimento ativo</span></div>
       </div>
@@ -397,12 +414,26 @@
 
     <section class="final" id="download">
       <div class="shell final-box">
-        <div class="section-kicker" data-i18n="final_kicker">KAMMAHL // BUILD IN PROGRESS</div>
-        <h2 data-i18n="final_title">Um Companion que aprende o contexto da sua jornada.</h2>
-        <p data-i18n="final_text">
-          O Kammahl ainda está em desenvolvimento. Esta página será atualizada conforme os recursos, versões de teste e formas de acesso forem sendo liberados.
+        <div class="section-kicker" data-i18n="final_kicker">KAMMAHL // BETA PÚBLICA</div>
+        <h2 data-i18n="download_title">Baixe a primeira Beta pública do Kammahl.</h2>
+        <p data-i18n="download_text">
+          Versão portátil para Windows x64. Baixe o ZIP, extraia todo o conteúdo para uma pasta e execute o Kammahl a partir da pasta extraída.
         </p>
-        <a class="btn primary" href="https://github.com/" target="_blank" rel="noopener" data-i18n="final_button">Projeto em evolução</a>
+
+        <div class="download-panel">
+          <a class="btn primary" href="https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip" data-i18n="download_button">Baixar Kammahl Beta</a>
+          <div class="download-meta">
+            <span data-i18n="download_version">Versão 0.1.0 — Beta 1</span>
+            <span>Windows x64</span>
+            <span>Portable</span>
+            <span>~520 MB</span>
+          </div>
+          <a class="release-link" href="https://github.com/Kammahl/kammahl-downloads/releases/tag/v0.1.0-beta.1" target="_blank" rel="noopener" data-i18n="download_notes">Ver notas da versão no GitHub</a>
+        </div>
+
+        <p style="margin-top:24px;font-size:13px" data-i18n="download_warning">
+          No GitHub, baixe o arquivo Kammahl-0.1.0-beta.1-win-x64-portable.zip. Ignore os arquivos “Source code”, gerados automaticamente pelo GitHub.
+        </p>
       </div>
     </section>
   </main>
@@ -428,7 +459,7 @@
             "nav_how": "Como funciona",
             "nav_privacy": "Privacidade",
             "nav_api": "Chave API",
-            "nav_project": "Acompanhar projeto",
+            "nav_project": "Download",
             "eyebrow": "Companion Intelligence System",
             "slogan": "Nunca mais jogue sozinho.",
             "tagline": "Seu companheiro de jogos inteligente.",
@@ -488,7 +519,7 @@
             "nav_how": "How it works",
             "nav_privacy": "Privacy",
             "nav_api": "API Key",
-            "nav_project": "Follow the project",
+            "nav_project": "Download",
             "eyebrow": "Companion Intelligence System",
             "slogan": "Never play alone again.",
             "tagline": "Your intelligent gaming companion.",
