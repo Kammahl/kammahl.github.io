@@ -3,445 +3,341 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#060606">
-  <meta name="description" content="Kammahl — nunca mais jogue sozinho. Seu companheiro de jogos inteligente. Baixe a Beta pública para Windows x64.">
-  <title>Kammahl — Seu companheiro de jogos inteligente</title>
+  <meta name="theme-color" content="#070707">
+  <meta name="description" content="Kammahl é seu companheiro de jogos inteligente para Windows: visão de tela, memória, voz e ajuda contextual sem jogar por você. Baixe a Beta pública.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://kammahl.github.io/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kammahl">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Kammahl — Nunca mais jogue sozinho">
+  <meta property="og:description" content="Um companheiro de jogos com visão, memória e voz. Conheça e baixe a primeira Beta pública para Windows.">
+  <meta property="og:url" content="https://kammahl.github.io/">
+  <meta property="og:image" content="https://kammahl.github.io/assets/kammahl-hero.png">
+  <meta property="og:image:width" content="2048">
+  <meta property="og:image:height" content="945">
+  <meta property="og:image:alt" content="Robô Kammahl em uma interface preta e amarela">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kammahl — Nunca mais jogue sozinho">
+  <meta name="twitter:description" content="Seu companheiro de jogos inteligente para Windows.">
+  <meta name="twitter:image" content="https://kammahl.github.io/assets/kammahl-hero.png">
+
+  <title>Kammahl — Nunca mais jogue sozinho</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Kammahl",
+    "description": "Companheiro de jogos inteligente com visão de tela, memória, voz e ajuda contextual.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows 10, Windows 11",
+    "softwareVersion": "0.1.0-beta.1",
+    "downloadUrl": "https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip",
+    "url": "https://kammahl.github.io/",
+    "author": {"@type": "Organization", "name": "Kammahl", "email": "kammahl@gmail.com"}
+  }
+  </script>
+
   <style>
     :root{
-      --bg:#050505;
-      --bg2:#090909;
-      --panel:#0d0d0f;
-      --panel2:#121214;
-      --ink:#f5f5f5;
-      --muted:#9a9aa0;
-      --amber:#f0a000;
-      --amber2:#ffc342;
-      --amber-dim:#7c5400;
-      --line:rgba(240,160,0,.28);
-      --soft:rgba(240,160,0,.08);
-      --max:1180px;
+      --bg:#060606;--bg-elevated:#0b0b0c;--panel:#101012;--panel-2:#151517;
+      --text:#f4f4f5;--muted:#a7a7ad;--quiet:#77777e;
+      --amber:#f0a000;--amber-bright:#ffc342;--amber-dark:#7c5400;
+      --line:rgba(240,160,0,.30);--line-soft:rgba(255,255,255,.09);--glow:rgba(240,160,0,.16);
+      --max:1180px;--header:72px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      min-height:100vh;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at 20% 0%, rgba(240,160,0,.07), transparent 28rem),
-        linear-gradient(180deg,#050505 0%,#080808 100%);
-      font-family:Inter,Segoe UI,Arial,sans-serif;
-      overflow-x:hidden;
-    }
-    body:before{
-      content:"";
-      position:fixed; inset:0; pointer-events:none; z-index:20;
-      background:repeating-linear-gradient(180deg,rgba(255,255,255,.012) 0 1px,transparent 1px 4px);
-      mix-blend-mode:screen; opacity:.3;
-    }
+    html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header) + 20px)}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.2;background:repeating-linear-gradient(180deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px)}
     a{color:inherit;text-decoration:none}
     button{font:inherit}
-    .shell{width:min(var(--max),calc(100% - 40px));margin:auto}
-    .topbar{
-      position:sticky; top:0; z-index:30;
-      backdrop-filter:blur(18px);
-      background:rgba(5,5,5,.78);
-      border-bottom:1px solid rgba(255,255,255,.07);
-    }
-    .nav{
-      height:70px; display:flex; align-items:center; justify-content:space-between; gap:24px;
-    }
-    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.18em}
-    .brandmark{
-      width:38px;height:38px;display:grid;place-items:center;
-      border:1px solid var(--line);clip-path:polygon(18% 0,82% 0,100% 18%,100% 82%,82% 100%,18% 100%,0 82%,0 18%);
-      background:linear-gradient(145deg,#171717,#080808); color:var(--amber); font-size:20px;
-      box-shadow:0 0 24px rgba(240,160,0,.12) inset;
-    }
-    nav{display:flex;gap:26px;align-items:center;color:#c9c9cd;font-size:14px}
-    nav a{transition:.2s}
-    nav a:hover{color:var(--amber2)}
-    .nav-cta{
-      border:1px solid var(--line);padding:10px 16px;
-      color:var(--amber2);background:rgba(240,160,0,.05);
-      clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
-    }
-    .menu-btn{display:none;border:1px solid var(--line);background:#0d0d0d;color:var(--amber);width:42px;height:42px}
-    .lang-btn{
-      height:40px;min-width:70px;padding:0 13px;border:1px solid var(--line);cursor:pointer;
-      background:#0d0d0f;color:var(--amber2);font-weight:800;font-size:12px;letter-spacing:.12em;
-      clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
-    }
-    .lang-btn:hover{background:rgba(240,160,0,.09)}
-    .subhead small{font-size:.62em;color:#d8d8dc;font-weight:500;letter-spacing:.02em}
-    .api-box{
-      margin-top:50px;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:stretch
-    }
-    .api-panel{
-      position:relative;padding:34px;
-      background:linear-gradient(145deg,rgba(18,18,20,.98),rgba(7,7,8,.98));
-      border:1px solid var(--line);
-      clip-path:polygon(15px 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,0 100%,0 15px);
-    }
-    .api-panel:before{content:"";position:absolute;left:0;top:0;width:110px;height:2px;background:var(--amber)}
-    .api-panel h3{font-size:24px;margin:0 0 12px}
-    .api-panel p{color:#a5a5ab;line-height:1.75;margin:0}
-    .api-list{display:grid;gap:13px;margin-top:22px}
-    .api-item{display:flex;gap:12px;color:#c2c2c7;line-height:1.55}
-    .api-item:before{content:"◆";color:var(--amber);font-size:10px;margin-top:5px}
-    .key-visual{
-      min-height:300px;display:grid;place-items:center;position:relative;overflow:hidden;
-      background:
-        radial-gradient(circle at 50% 50%,rgba(240,160,0,.12),transparent 42%),
-        linear-gradient(145deg,#0d0d0f,#070708);
-      border:1px solid rgba(255,255,255,.07);
-    }
-    .key-chip{
-      width:min(82%,420px);padding:24px;border:1px solid var(--line);background:#09090a;
-      box-shadow:0 0 50px rgba(240,160,0,.08);
-    }
-    .key-label{color:var(--amber);font-size:11px;font-weight:800;letter-spacing:.18em;margin-bottom:12px}
-    .key-line{height:12px;background:linear-gradient(90deg,var(--amber) 0 22%,#2b2b2e 22% 100%);margin:10px 0}
-    .key-line.short{width:68%}
-    .key-foot{margin-top:16px;color:#77777d;font-size:11px;letter-spacing:.08em}
+    img{display:block;max-width:100%}
+    :focus-visible{outline:2px solid var(--amber-bright);outline-offset:4px}
+    .skip{position:fixed;left:14px;top:-80px;z-index:100;padding:12px 16px;background:var(--amber);color:#070707;font-weight:800}
+    .skip:focus{top:14px}
+    .shell{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+    .amber{color:var(--amber-bright)}
+    .topbar{position:sticky;top:0;z-index:40;height:var(--header);border-bottom:1px solid var(--line-soft);background:rgba(6,6,6,.86);backdrop-filter:blur(18px)}
+    .nav-row{height:100%;display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.17em}
+    .brandmark{width:40px;height:40px;display:grid;place-items:center;color:var(--amber-bright);font-size:20px;border:1px solid var(--line);background:linear-gradient(145deg,#1b1b1c,#080808);clip-path:polygon(18% 0,82% 0,100% 18%,100% 82%,82% 100%,18% 100%,0 82%,0 18%)}
+    nav{display:flex;align-items:center;gap:24px;color:#d0d0d4;font-size:14px}
+    nav a{transition:color .18s}
+    nav a:hover{color:var(--amber-bright)}
+    .nav-cta,.lang-btn,.menu-btn{border:1px solid var(--line);background:rgba(240,160,0,.06);color:var(--amber-bright);cursor:pointer}
+    .nav-cta{padding:10px 16px;font-weight:800}
+    .lang-btn{height:40px;min-width:74px;padding:0 12px;font-size:12px;font-weight:900;letter-spacing:.1em}
+    .menu-btn{display:none;width:44px;height:44px;font-size:20px}
 
-    .hero{
-      min-height:calc(100vh - 70px);
-      display:grid;grid-template-columns:1.08fr .92fr;align-items:center;
-      position:relative;
-    }
-    .hero:after{
-      content:"";position:absolute;inset:9% 0 8%;pointer-events:none;
-      border:1px solid rgba(240,160,0,.12);
-      clip-path:polygon(22px 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%,0 22px);
-    }
-    .visual{min-height:650px;position:relative;overflow:hidden}
-    .visual img{
-      position:absolute;height:100%;width:auto;max-width:none;left:-220px;top:0;
-      filter:saturate(.93) contrast(1.05);
-      -webkit-mask-image:linear-gradient(90deg,#000 0%,#000 70%,transparent 100%);
-      mask-image:linear-gradient(90deg,#000 0%,#000 70%,transparent 100%);
-    }
-    .visual:after{
-      content:"";position:absolute;inset:0;
-      background:linear-gradient(90deg,transparent 55%,var(--bg) 98%);
-      pointer-events:none;
-    }
-    .hero-copy{position:relative;z-index:3;padding:70px 48px 70px 14px}
-    .eyebrow{
-      display:flex;align-items:center;gap:12px;color:var(--amber2);
-      font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
-    }
-    .eyebrow:before{content:"";width:44px;height:1px;background:var(--amber)}
-    h1{
-      margin:20px 0 0;
-      font-size:clamp(58px,7vw,108px);
-      line-height:.88;letter-spacing:.08em;
-      font-weight:900;text-transform:uppercase;
-      text-shadow:0 0 45px rgba(240,160,0,.08);
-    }
-    .subhead{
-      margin:20px 0 0;color:var(--amber2);font-weight:700;
-      font-size:clamp(18px,2vw,26px);letter-spacing:.04em;
-    }
-    .lead{font-size:18px;line-height:1.75;color:#b8b8bd;max-width:600px;margin:24px 0 0}
-    .actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
-    .btn{
-      min-width:180px;height:50px;padding:0 22px;border:none;cursor:pointer;
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      text-transform:uppercase;font-size:12px;font-weight:800;letter-spacing:.14em;
-      clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);
-      transition:transform .2s,filter .2s;
-    }
+    .hero{position:relative;min-height:calc(100vh - var(--header));isolation:isolate;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+    .hero-media{position:absolute;inset:0;z-index:-2}
+    .hero-media img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .hero::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(4,4,4,.16) 0%,rgba(4,4,4,.35) 37%,rgba(4,4,4,.86) 62%,#060606 100%),linear-gradient(0deg,#060606 0%,transparent 30%)}
+    .hero-grid{min-height:calc(100vh - var(--header));display:grid;grid-template-columns:.9fr 1.1fr;align-items:center}
+    .hero-copy{grid-column:2;padding:86px 0 84px 54px}
+    .beta-badge{display:inline-flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid var(--line);background:rgba(6,6,6,.72);color:var(--amber-bright);font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+    .beta-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 14px var(--amber)}
+    h1{margin:24px 0 0;font-size:clamp(62px,8vw,112px);line-height:.88;letter-spacing:.075em;text-transform:uppercase}
+    .slogan{margin:22px 0 0;color:var(--amber-bright);font-size:clamp(22px,2.7vw,36px);font-weight:850;line-height:1.12}
+    .tagline{display:block;margin-top:8px;color:#dddde1;font-size:.55em;font-weight:600;letter-spacing:.035em}
+    .lead{max-width:660px;margin:26px 0 0;color:#b9b9bf;font-size:18px;line-height:1.75}
+    .actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:34px}
+    .btn{min-height:52px;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;border:1px solid transparent;font-size:12px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;transition:transform .18s,filter .18s,background .18s;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
     .btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
-    .primary{background:var(--amber);color:#080808;box-shadow:0 0 35px rgba(240,160,0,.18)}
-    .secondary{background:#101010;color:#e5e5e8;border:1px solid var(--line)}
-    .status{
-      margin-top:30px;display:flex;align-items:center;gap:10px;color:#8f8f95;font-size:13px;
-    }
-    .pulse{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px var(--amber)}
+    .btn.primary{background:var(--amber);color:#070707}
+    .btn.secondary{border-color:var(--line);background:rgba(10,10,10,.78);color:#ededf0}
+    .hero-facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:28px;color:#929299;font-size:12px}
+    .hero-facts span{display:flex;align-items:center;gap:8px}
+    .hero-facts span::before{content:"◆";color:var(--amber);font-size:8px}
 
-    section{padding:110px 0}
-    .section-kicker{color:var(--amber);font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
-    h2{font-size:clamp(34px,5vw,64px);margin:12px 0 18px;letter-spacing:-.03em}
-    .section-lead{max-width:720px;color:#a6a6ab;line-height:1.8;font-size:17px}
-    .features{
-      margin-top:50px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px
-    }
-    .card{
-      position:relative;min-height:220px;padding:26px;
-      background:linear-gradient(145deg,rgba(18,18,20,.96),rgba(8,8,9,.98));
-      border:1px solid rgba(255,255,255,.07);
-      clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
-      overflow:hidden;
-    }
-    .card:before{
-      content:"";position:absolute;top:0;left:0;width:82px;height:2px;background:var(--amber);
-      box-shadow:0 0 18px rgba(240,160,0,.45)
-    }
-    .ico{
-      width:48px;height:48px;display:grid;place-items:center;color:var(--amber2);font-size:22px;
-      border:1px solid var(--line);background:var(--soft);margin-bottom:25px;
-      clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px);
-    }
-    .card h3{margin:0 0 9px;font-size:18px}
-    .card p{margin:0;color:#909096;line-height:1.65;font-size:14px}
+    section{padding:104px 0}
+    .section-kicker{color:var(--amber);font-size:12px;font-weight:900;letter-spacing:.2em;text-transform:uppercase}
+    h2{max-width:840px;margin:14px 0 18px;font-size:clamp(36px,5.2vw,64px);line-height:1.03;letter-spacing:-.035em}
+    .section-lead{max-width:760px;margin:0;color:var(--muted);font-size:17px;line-height:1.75}
+    .trust-strip{padding:22px 0;border-bottom:1px solid var(--line-soft);background:#090909}
+    .trust-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft)}
+    .trust-item{padding:17px 20px;background:#090909;text-align:center}
+    .trust-item strong{display:block;color:var(--amber-bright);font-size:13px}
+    .trust-item span{display:block;margin-top:5px;color:var(--quiet);font-size:12px}
 
-    .flow-wrap{
-      display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;align-items:center
-    }
-    .core{
-      aspect-ratio:1;max-width:430px;margin:auto;border-radius:50%;position:relative;
-      display:grid;place-items:center;
-      background:
-        radial-gradient(circle,rgba(240,160,0,.18) 0 7%,transparent 8% 18%,rgba(240,160,0,.08) 19% 20%,transparent 21% 37%,rgba(240,160,0,.08) 38% 39%,transparent 40%),
-        #070707;
-      border:1px solid var(--line);
-      box-shadow:0 0 90px rgba(240,160,0,.08);
-    }
-    .core:before,.core:after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(240,160,0,.28)}
-    .core:before{inset:12%;animation:spin 18s linear infinite}
-    .core:after{inset:25%;animation:spin 12s linear infinite reverse}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+    .card{position:relative;min-height:230px;padding:28px;border:1px solid var(--line-soft);background:linear-gradient(145deg,rgba(20,20,22,.98),rgba(8,8,9,.98));overflow:hidden;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+    .card::before{content:"";position:absolute;left:0;top:0;width:90px;height:2px;background:var(--amber);box-shadow:0 0 18px var(--amber)}
+    .icon{width:48px;height:48px;display:grid;place-items:center;margin-bottom:24px;border:1px solid var(--line);background:rgba(240,160,0,.07);color:var(--amber-bright);font-size:22px}
+    .card h3{margin:0 0 10px;font-size:19px}
+    .card p{margin:0;color:#99999f;font-size:14px;line-height:1.65}
+
+    .flow{display:grid;grid-template-columns:.78fr 1.22fr;gap:72px;align-items:center}
+    .core{aspect-ratio:1;max-width:420px;margin:auto;display:grid;place-items:center;position:relative;border:1px solid var(--line);border-radius:50%;background:radial-gradient(circle,rgba(240,160,0,.20) 0 7%,transparent 8% 19%,rgba(240,160,0,.08) 20% 21%,transparent 22% 39%,rgba(240,160,0,.07) 40% 41%,transparent 42%),#080808;box-shadow:0 0 90px rgba(240,160,0,.08)}
+    .core::before,.core::after{content:"";position:absolute;border:1px dashed rgba(240,160,0,.30);border-radius:50%}
+    .core::before{inset:13%;animation:spin 18s linear infinite}.core::after{inset:27%;animation:spin 12s linear infinite reverse}
+    .core-k{color:var(--amber);font-size:110px;font-weight:950;text-shadow:0 0 38px rgba(240,160,0,.35)}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .core-letter{font-size:112px;font-weight:900;color:var(--amber);text-shadow:0 0 40px rgba(240,160,0,.35)}
-    .steps{display:grid;gap:14px;margin-top:34px}
-    .step{
-      display:grid;grid-template-columns:62px 1fr;gap:18px;padding:20px;
-      border:1px solid rgba(255,255,255,.07);background:#0c0c0d;
-    }
-    .num{color:var(--amber);font-weight:900;font-size:12px;letter-spacing:.12em}
-    .step h3{margin:0 0 6px;font-size:17px}.step p{margin:0;color:#8f8f95;line-height:1.6;font-size:14px}
+    .steps{display:grid;gap:13px;margin-top:34px}
+    .step{display:grid;grid-template-columns:58px 1fr;gap:18px;padding:21px;border:1px solid var(--line-soft);background:#0c0c0d}
+    .step-num{color:var(--amber);font-size:12px;font-weight:900;letter-spacing:.13em}
+    .step h3{margin:0 0 7px;font-size:18px}.step p{margin:0;color:#98989e;font-size:14px;line-height:1.6}
 
-    .privacy{
-      padding:55px;border:1px solid var(--line);
-      background:
-        linear-gradient(90deg,rgba(240,160,0,.07),transparent 30%),
-        linear-gradient(145deg,#101011,#09090a);
-      clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px);
-      display:grid;grid-template-columns:1fr .8fr;gap:50px;align-items:center;
-    }
-    .privacy ul{margin:0;padding:0;list-style:none;display:grid;gap:14px}
-    .privacy li{display:flex;gap:12px;align-items:flex-start;color:#b6b6bb;line-height:1.55}
-    .privacy li:before{content:"◆";color:var(--amber);font-size:10px;margin-top:5px}
+    .start-section{background:linear-gradient(180deg,#080808,#0b0b0c);border-block:1px solid var(--line-soft)}
+    .start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:46px;counter-reset:start}
+    .start-card{counter-increment:start;min-height:238px;padding:28px;border:1px solid var(--line);background:linear-gradient(145deg,#141416,#09090a)}
+    .start-card::before{content:"0" counter(start);display:block;margin-bottom:25px;color:var(--amber);font-size:12px;font-weight:900;letter-spacing:.16em}
+    .start-card h3{margin:0 0 11px;font-size:20px}.start-card p{margin:0;color:#a0a0a6;line-height:1.65;font-size:14px}
+    .start-note{margin-top:22px;padding:18px 20px;border-left:2px solid var(--amber);background:rgba(240,160,0,.05);color:#b8b8bd;line-height:1.6;font-size:14px}
 
-    .download-panel{
-      margin-top:34px;padding:28px;
-      border:1px solid var(--line);
-      background:linear-gradient(145deg,rgba(240,160,0,.06),rgba(10,10,11,.96));
-      clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
-    }
-    .download-meta{
-      display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;
-      color:#9b9ba1;font-size:12px;margin:18px 0 0
-    }
-    .download-meta span{display:inline-flex;align-items:center;gap:7px}
-    .download-meta span:before{content:"◆";color:var(--amber);font-size:8px}
-    .release-link{
-      display:inline-block;margin-top:18px;color:var(--amber2);font-size:13px;
-      border-bottom:1px dotted rgba(240,160,0,.5)
-    }
-    .release-link:hover{color:#ffd676}
-    .final{
-      text-align:center;padding-bottom:130px
-    }
-    .final-box{
-      padding:72px 30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-      background:radial-gradient(circle at 50% 0%,rgba(240,160,0,.09),transparent 55%);
-    }
-    .final h2{margin-inline:auto;max-width:880px}
-    .final p{color:#96969c;margin:0 auto 28px;max-width:650px;line-height:1.7}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:46px}
+    .info-panel{padding:34px;border:1px solid var(--line-soft);background:linear-gradient(145deg,#121214,#09090a)}
+    .info-panel.highlight{border-color:var(--line);background:linear-gradient(145deg,rgba(240,160,0,.09),#09090a 45%)}
+    .info-panel h3{margin:0 0 14px;font-size:25px}.info-panel p{margin:0;color:#a3a3a9;line-height:1.7}
+    .checklist{display:grid;gap:13px;margin:22px 0 0;padding:0;list-style:none}
+    .checklist li{display:flex;gap:12px;color:#bcbcc1;line-height:1.55;font-size:14px}
+    .checklist li::before{content:"◆";margin-top:5px;color:var(--amber);font-size:9px}
 
-    footer{
-      border-top:1px solid rgba(255,255,255,.07);padding:26px 0;color:#77777d;font-size:12px
-    }
-    .foot{display:flex;justify-content:space-between;gap:20px;align-items:center}
-    .foot a{color:var(--amber2)}
-    .foot a:hover{text-decoration:underline}
-    .footer-contact{text-align:right}
-    .amber{color:var(--amber)}
+    .beta-panel{display:grid;grid-template-columns:1.15fr .85fr;gap:38px;padding:48px;border:1px solid var(--line);background:radial-gradient(circle at 90% 10%,rgba(240,160,0,.12),transparent 40%),#101011;clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px)}
+    .requirements{display:grid;gap:12px;align-content:center}
+    .requirement{padding:14px 16px;border:1px solid var(--line-soft);background:#0a0a0b;color:#b9b9be;font-size:14px}
+    .requirement strong{color:var(--amber-bright)}
 
-    @media(max-width:900px){
+    .download{text-align:center;padding-bottom:126px}
+    .download h2,.download .section-lead{margin-inline:auto}
+    .download-box{max-width:880px;margin:38px auto 0;padding:34px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(240,160,0,.08),#0a0a0b);clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px)}
+    .download-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;margin-top:20px;color:#98989e;font-size:12px}
+    .download-meta span::before{content:"◆";margin-right:7px;color:var(--amber);font-size:8px}
+    .release-link{display:inline-block;margin-top:18px;color:var(--amber-bright);font-size:13px;border-bottom:1px dotted var(--amber-dark)}
+    .checksum{max-width:760px;margin:25px auto 0;padding:15px;border:1px solid var(--line-soft);background:#070708;text-align:left}
+    .checksum-label{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#8f8f95;font-size:11px;text-transform:uppercase;letter-spacing:.1em}
+    .copy-btn{border:1px solid var(--line);background:transparent;color:var(--amber-bright);padding:7px 10px;cursor:pointer;font-size:11px}
+    .hash{display:block;margin-top:10px;color:#c4c4c8;font-family:Consolas,monospace;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+    .checksum [role="status"]{min-height:16px;margin-top:7px;color:var(--amber-bright);font-size:11px}
+    .warning{max-width:780px;margin:20px auto 0;color:#8e8e94;font-size:13px;line-height:1.65}
+    .support{margin-top:28px;color:#a1a1a7;font-size:14px}.support a{color:var(--amber-bright);border-bottom:1px dotted var(--amber-dark)}
+
+    footer{padding:28px 0;border-top:1px solid var(--line-soft);color:#7f7f86;font-size:12px}
+    .footer-row{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer-row a{color:var(--amber-bright)}
+
+    @media(max-width:920px){
       nav{display:none}
-      nav.open{
-        display:flex;position:absolute;top:70px;left:20px;right:20px;flex-direction:column;align-items:stretch;
-        background:#0b0b0c;border:1px solid var(--line);padding:18px
-      }
+      nav.open{display:flex;position:absolute;top:var(--header);left:20px;right:20px;flex-direction:column;align-items:stretch;padding:20px;background:#0b0b0c;border:1px solid var(--line);box-shadow:0 20px 50px rgba(0,0,0,.45)}
       .menu-btn{display:block}
-      .hero{grid-template-columns:1fr;min-height:auto}
-      .visual{min-height:520px;order:2;margin-top:-100px;opacity:.72}
-      .visual img{left:50%;transform:translateX(-52%);height:100%}
-      .hero-copy{padding:100px 10px 40px;order:1}
-      .hero:after{display:none}
-      .features{grid-template-columns:1fr 1fr}
-      .flow-wrap,.privacy,.api-box{grid-template-columns:1fr}
+      .hero-grid{grid-template-columns:1fr;align-items:end}.hero-copy{grid-column:1;padding:310px 0 72px;max-width:700px}
+      .hero::before{background:linear-gradient(0deg,#060606 8%,rgba(6,6,6,.78) 42%,rgba(6,6,6,.08) 78%),linear-gradient(90deg,rgba(6,6,6,.1),rgba(6,6,6,.55))}
+      .hero-media img{object-position:35% center}
+      .feature-grid{grid-template-columns:repeat(2,1fr)}
+      .flow,.beta-panel{grid-template-columns:1fr}.core{max-width:330px}
+      .start-grid{grid-template-columns:1fr}.start-card{min-height:0}
     }
-    @media(max-width:620px){
-      .shell{width:min(100% - 26px,var(--max))}
-      h1{font-size:52px}
-      .features{grid-template-columns:1fr}
-      section{padding:80px 0}
-      .privacy{padding:28px}
-      .visual{min-height:390px}
-      .actions .btn{width:100%}
-      .foot{flex-direction:column;align-items:flex-start}
-      .footer-contact{text-align:left}
+    @media(max-width:650px){
+      .shell{width:min(var(--max),calc(100% - 26px))}
+      section{padding:78px 0}.hero-copy{padding:280px 0 62px}
+      h1{font-size:52px}.lead{font-size:16px}.actions .btn{width:100%}
+      .hero-media img{object-position:31% center}
+      .trust-row{grid-template-columns:1fr 1fr}
+      .feature-grid,.split{grid-template-columns:1fr}
+      .beta-panel{padding:30px 24px}
+      .download-box{padding:28px 18px}
+      .footer-row{flex-direction:column;align-items:flex-start}
     }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.core::before,.core::after{animation:none}.btn{transition:none}}
   </style>
 </head>
 <body>
+  <a class="skip" href="#conteudo" data-i18n="skip">Pular para o conteúdo</a>
   <header class="topbar">
-    <div class="shell nav">
-      <a class="brand" href="#inicio"><span class="brandmark">K</span><span>KAMMAHL</span></a>
-      <nav id="nav">
+    <div class="shell nav-row">
+      <a class="brand" href="#inicio" aria-label="Kammahl — início"><span class="brandmark" aria-hidden="true">K</span><span>KAMMAHL</span></a>
+      <nav id="nav" aria-label="Navegação principal">
         <a href="#recursos" data-i18n="nav_features">Recursos</a>
         <a href="#como-funciona" data-i18n="nav_how">Como funciona</a>
+        <a href="#comecar" data-i18n="nav_start">Começar</a>
         <a href="#privacidade" data-i18n="nav_privacy">Privacidade</a>
-        <a href="#api" data-i18n="nav_api">Chave API</a>
-        <a class="nav-cta" href="#download" data-i18n="nav_project">Download</a>
-        <button class="lang-btn" id="langBtn" type="button" aria-label="Mudar idioma">PT / EN</button>
+        <a class="nav-cta" href="#download" data-i18n="nav_download">Download</a>
+        <button class="lang-btn" id="langBtn" type="button" aria-label="Mudar o site para inglês">PT / EN</button>
       </nav>
-      <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menu" aria-controls="nav" aria-expanded="false">☰</button>
     </div>
   </header>
 
-  <main>
-    <section class="hero shell" id="inicio">
-      <div class="visual" aria-hidden="true">
-        <img src="assets/kammahl-robot.png" alt="">
-      </div>
-      <div class="hero-copy">
-        <div class="eyebrow" data-i18n="eyebrow">Companion Intelligence System</div>
-        <h1>Kammahl</h1>
-        <div class="subhead"><span data-i18n="slogan">Nunca mais jogue sozinho.</span><br><small data-i18n="tagline">Seu companheiro de jogos inteligente.</small></div>
-        <p class="lead" data-i18n="hero_lead">Um assistente pensado para jogar ao seu lado: observa o contexto, lembra do que importa, entende sua evolução e ajuda você a tomar decisões sem tirar o controle das suas mãos.</p>
-        <div class="actions">
-          <a class="btn primary" href="https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip" data-i18n="hero_download">Baixar Kammahl Beta</a>
-          <a class="btn secondary" href="https://github.com/Kammahl/kammahl-downloads/releases/tag/v0.1.0-beta.1" target="_blank" rel="noopener" data-i18n="hero_release">Ver versão Beta</a>
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div class="hero-media" aria-hidden="true"><img src="assets/kammahl-hero.png" alt=""></div>
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="beta-badge" data-i18n="hero_badge">Beta pública 0.1.0 disponível</div>
+          <h1>Kammahl</h1>
+          <div class="slogan"><span data-i18n="slogan">Nunca mais jogue sozinho.</span><span class="tagline" data-i18n="tagline">Seu companheiro de jogos inteligente.</span></div>
+          <p class="lead" data-i18n="hero_lead">O Kammahl acompanha sua jornada: entende o que acontece na tela, lembra do que importa e conversa com você por texto ou voz — sempre mantendo o jogador no comando.</p>
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip" data-i18n="hero_download">Baixar Beta para Windows</a>
+            <a class="btn secondary" href="#recursos" data-i18n="hero_discover">Conhecer o Kammahl</a>
+          </div>
+          <div class="hero-facts">
+            <span data-i18n="fact_portable">ZIP portátil</span><span>Windows 10/11 x64</span><span data-i18n="fact_local">Dados locais por padrão</span>
+          </div>
         </div>
-        <div class="status"><span class="pulse"></span> <span data-i18n="hero_status">Projeto em desenvolvimento ativo</span></div>
       </div>
     </section>
 
+    <div class="trust-strip" aria-label="Resumo da versão">
+      <div class="shell trust-row">
+        <div class="trust-item"><strong data-i18n="trust1_title">Conversa natural</strong><span data-i18n="trust1_text">Texto e voz durante a partida</span></div>
+        <div class="trust-item"><strong data-i18n="trust2_title">Contexto contínuo</strong><span data-i18n="trust2_text">Memória entre sessões</span></div>
+        <div class="trust-item"><strong data-i18n="trust3_title">Controle do jogador</strong><span data-i18n="trust3_text">Permissões explícitas</span></div>
+        <div class="trust-item"><strong data-i18n="trust4_title">Beta portátil</strong><span data-i18n="trust4_text">Dependências principais incluídas</span></div>
+      </div>
+    </div>
+
     <section id="recursos">
       <div class="shell">
-        <div class="section-kicker" data-i18n="features_kicker">01 // Recursos</div>
-        <h2 data-i18n="features_title">Mais contexto. Menos interrupção.</h2>
-        <p class="section-lead" data-i18n="features_lead">
-          O Kammahl foi desenhado como um Companion: ele combina visão, memória, voz, conhecimento e ferramentas para ajudar durante a partida sem automatizar o jogo por você.
-        </p>
-        <div class="features">
-          <article class="card"><div class="ico">◉</div><h3 data-i18n="feature1_title">Visão de tela</h3><p data-i18n="feature1_text">Analisa capturas e elementos visuais para entender o que está acontecendo no jogo.</p></article>
-          <article class="card"><div class="ico">◫</div><h3 data-i18n="feature2_title">Memória persistente</h3><p data-i18n="feature2_text">Preserva contexto relevante de sessões, personagens, builds e descobertas.</p></article>
-          <article class="card"><div class="ico">⌁</div><h3 data-i18n="feature3_title">Voz natural</h3><p data-i18n="feature3_text">Converse sem abandonar a partida, usando entrada e resposta por voz quando desejar.</p></article>
-          <article class="card"><div class="ico">⌕</div><h3 data-i18n="feature4_title">Pesquisa inteligente</h3><p data-i18n="feature4_text">Consulta conhecimento e fontes externas quando a resposta exige informação atualizada.</p></article>
-          <article class="card"><div class="ico">◇</div><h3 data-i18n="feature5_title">Análise de build</h3><p data-i18n="feature5_text">Conecta informações do personagem e ferramentas específicas do jogo para comparar escolhas.</p></article>
-          <article class="card"><div class="ico">↻</div><h3 data-i18n="feature6_title">Conhecimento vivo</h3><p data-i18n="feature6_text">Novas descobertas podem atualizar e substituir informações antigas sem apagar o histórico.</p></article>
+        <div class="section-kicker" data-i18n="features_kicker">01 // O Companion</div>
+        <h2 data-i18n="features_title">Ajuda que entende o momento da partida.</h2>
+        <p class="section-lead" data-i18n="features_lead">O Kammahl reúne contexto, memória e ferramentas para responder de forma útil sem transformar sua experiência em automação.</p>
+        <div class="feature-grid">
+          <article class="card"><div class="icon" aria-hidden="true">◉</div><h3 data-i18n="feature1_title">Visão de tela</h3><p data-i18n="feature1_text">Analisa capturas autorizadas para compreender menus, itens e situações visíveis do jogo.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">◫</div><h3 data-i18n="feature2_title">Memória persistente</h3><p data-i18n="feature2_text">Mantém contexto relevante de conversas, personagens, objetivos, builds e descobertas.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">⌁</div><h3 data-i18n="feature3_title">Conversa por voz</h3><p data-i18n="feature3_text">Escuta e responde em voz alta para você continuar jogando sem depender do teclado.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">⌕</div><h3 data-i18n="feature4_title">Pesquisa com fontes</h3><p data-i18n="feature4_text">Busca informação atual quando necessário e separa pesquisa externa da memória pessoal.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">◇</div><h3 data-i18n="feature5_title">Ferramentas de jogo</h3><p data-i18n="feature5_text">Usa integrações específicas, como informações de build, para comparar escolhas com mais contexto.</p></article>
+          <article class="card"><div class="icon" aria-hidden="true">↻</div><h3 data-i18n="feature6_title">Conhecimento atualizado</h3><p data-i18n="feature6_text">Novas evidências podem corrigir informações antigas sem apagar o histórico da sua jornada.</p></article>
         </div>
       </div>
     </section>
 
     <section id="como-funciona">
-      <div class="shell flow-wrap">
-        <div class="core"><div class="core-letter">K</div></div>
+      <div class="shell flow">
+        <div class="core" aria-hidden="true"><div class="core-k">K</div></div>
         <div>
           <div class="section-kicker" data-i18n="how_kicker">02 // Como funciona</div>
           <h2 data-i18n="how_title">O jogador continua no comando.</h2>
-          <p class="section-lead" data-i18n="how_lead">O Kammahl interpreta informações e recomenda ações. A decisão final continua sendo sua.</p>
+          <p class="section-lead" data-i18n="how_lead">O Kammahl interpreta informações e recomenda ações. Ele não joga no seu lugar.</p>
           <div class="steps">
-            <div class="step"><div class="num">01</div><div><h3 data-i18n="step1_title">Percebe</h3><p data-i18n="step1_text">Recebe contexto autorizado da tela, voz, memória e integrações disponíveis.</p></div></div>
-            <div class="step"><div class="num">02</div><div><h3 data-i18n="step2_title">Raciocina</h3><p data-i18n="step2_text">Combina conhecimento do jogo, histórico e ferramentas para avaliar a situação.</p></div></div>
-            <div class="step"><div class="num">03</div><div><h3 data-i18n="step3_title">Ajuda</h3><p data-i18n="step3_text">Explica, compara, alerta ou sugere — sem jogar por você.</p></div></div>
+            <div class="step"><div class="step-num">01</div><div><h3 data-i18n="step1_title">Percebe</h3><p data-i18n="step1_text">Recebe apenas o contexto permitido da tela, voz, conversa, memória e integrações.</p></div></div>
+            <div class="step"><div class="step-num">02</div><div><h3 data-i18n="step2_title">Raciocina</h3><p data-i18n="step2_text">Combina o momento atual com histórico e ferramentas para avaliar a situação.</p></div></div>
+            <div class="step"><div class="step-num">03</div><div><h3 data-i18n="step3_title">Ajuda</h3><p data-i18n="step3_text">Explica, compara, alerta ou sugere. A decisão e a ação continuam sendo suas.</p></div></div>
           </div>
         </div>
       </div>
     </section>
 
-
-    <section id="api">
+    <section class="start-section" id="comecar">
       <div class="shell">
-        <div class="section-kicker" data-i18n="api_kicker">03 // Chave de API</div>
-        <h2 data-i18n="api_title">Sua IA, sua chave.</h2>
-        <p class="section-lead" data-i18n="api_lead">
-          Para usar recursos de IA online, o Kammahl precisa de uma chave de API de um provedor compatível.
-          Você adiciona sua própria chave nas configurações do programa.
-        </p>
-        <div class="api-box">
-          <div class="api-panel">
-            <h3 data-i18n="api_panel_title">O que isso significa?</h3>
-            <p data-i18n="api_panel_text">
-              O Kammahl não inclui créditos ilimitados de serviços externos. Custos, limites e disponibilidade dependem do provedor de IA escolhido pelo usuário.
-            </p>
-            <div class="api-list">
-              <div class="api-item" data-i18n="api_item1">Adicione a chave de API nas configurações do Kammahl.</div>
-              <div class="api-item" data-i18n="api_item2">Escolha entre os provedores compatíveis disponíveis no programa.</div>
-              <div class="api-item" data-i18n="api_item3">O consumo e a cobrança da API são definidos pelo próprio provedor.</div>
-              <div class="api-item" data-i18n="api_item4">Recursos que funcionem localmente podem não exigir uma chave de API.</div>
-            </div>
-          </div>
-          <div class="key-visual" aria-hidden="true">
-            <div class="key-chip">
-              <div class="key-label">API KEY // PROVIDER</div>
-              <div class="key-line"></div>
-              <div class="key-line short"></div>
-              <div class="key-line"></div>
-              <div class="key-foot">•••• •••• •••• •••• ••••</div>
-            </div>
-          </div>
+        <div class="section-kicker" data-i18n="start_kicker">03 // Primeiros passos</div>
+        <h2 data-i18n="start_title">Do download à primeira conversa.</h2>
+        <p class="section-lead" data-i18n="start_lead">A Beta foi preparada para reduzir instalações manuais e deixar o primeiro teste mais simples.</p>
+        <div class="start-grid">
+          <article class="start-card"><h3 data-i18n="start1_title">Baixe e extraia</h3><p data-i18n="start1_text">Baixe o ZIP oficial e extraia todo o conteúdo para uma pasta. Não execute o programa de dentro do ZIP.</p></article>
+          <article class="start-card"><h3 data-i18n="start2_title">Abra o Kammahl</h3><p data-i18n="start2_text">Execute Kammahl.exe. O pacote já inclui .NET, Python, Tesseract, reconhecimento de voz e voz neural.</p></article>
+          <article class="start-card"><h3 data-i18n="start3_title">Escolha a inteligência</h3><p data-i18n="start3_text">Conecte o OpenRouter pelo navegador, adicione outra chave compatível ou use Ollama instalado no computador.</p></article>
         </div>
+        <div class="start-note" data-i18n="start_note"><strong>Importante:</strong> esta Beta ainda não possui assinatura digital. O Windows pode exibir o SmartScreen; confirme que o arquivo veio deste site e confira o SHA-256 antes de executar.</div>
       </div>
     </section>
 
     <section id="privacidade">
       <div class="shell">
-        <div class="privacy">
-          <div>
-            <div class="section-kicker" data-i18n="privacy_kicker">04 // Filosofia</div>
-            <h2 data-i18n="privacy_title">Assistente, não bot.</h2>
-            <p class="section-lead" data-i18n="privacy_lead">
-              A proposta do Kammahl é ampliar sua compreensão do jogo, não substituir suas decisões. A arquitetura prioriza permissões explícitas, contexto controlado e transparência sobre o que o Companion está usando.
-            </p>
-          </div>
-          <ul>
-            <li data-i18n="privacy_item1">Sem automação de gameplay como objetivo do produto.</li>
-            <li data-i18n="privacy_item2">Permissões explícitas para recursos sensíveis.</li>
-            <li data-i18n="privacy_item3">Memória organizada para manter continuidade entre sessões.</li>
-            <li data-i18n="privacy_item4">Ferramentas e fontes separadas da camada de personalidade.</li>
-          </ul>
+        <div class="section-kicker" data-i18n="privacy_kicker">04 // Controle e privacidade</div>
+        <h2 data-i18n="privacy_title">Seus dados, suas permissões, sua escolha de IA.</h2>
+        <p class="section-lead" data-i18n="privacy_lead">O Kammahl é local-first: perfis, memórias e conversas ficam no computador por padrão. Serviços online são opcionais e usam a conta ou chave escolhida pelo usuário.</p>
+        <div class="split">
+          <article class="info-panel highlight">
+            <h3 data-i18n="ai_title">Conexão simples com IA</h3>
+            <p data-i18n="ai_text">Use “Conectar OpenRouter” para autorizar pelo navegador ou configure outro provedor compatível. O Kammahl não recebe sua senha do serviço.</p>
+            <ul class="checklist"><li data-i18n="ai_item1">Custos e limites são definidos pelo provedor escolhido.</li><li data-i18n="ai_item2">Ollama pode ser usado para modelos locais compatíveis.</li><li data-i18n="ai_item3">Nenhuma chave pessoal acompanha o pacote.</li></ul>
+          </article>
+          <article class="info-panel">
+            <h3 data-i18n="privacy_panel_title">Assistente, não bot</h3>
+            <p data-i18n="privacy_panel_text">A proposta é ampliar sua compreensão do jogo, não automatizar gameplay.</p>
+            <ul class="checklist"><li data-i18n="privacy_item1">Capturas para modelos web exigem permissão específica.</li><li data-i18n="privacy_item2">Chaves informadas pelo usuário são protegidas pelo Windows.</li><li data-i18n="privacy_item3">Sem leitura de memória do jogo, injeção, cheat ou macro.</li></ul>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="final" id="download">
-      <div class="shell final-box">
-        <div class="section-kicker" data-i18n="final_kicker">KAMMAHL // BETA PÚBLICA</div>
-        <h2 data-i18n="download_title">Baixe a primeira Beta pública do Kammahl.</h2>
-        <p data-i18n="download_text">
-          Versão portátil para Windows x64. Baixe o ZIP, extraia todo o conteúdo para uma pasta e execute o Kammahl a partir da pasta extraída.
-        </p>
-
-        <div class="download-panel">
-          <a class="btn primary" href="https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip" data-i18n="download_button">Baixar Kammahl Beta</a>
-          <div class="download-meta">
-            <span data-i18n="download_version">Versão 0.1.0 — Beta 1</span>
-            <span>Windows x64</span>
-            <span>Portable</span>
-            <span>~520 MB</span>
-          </div>
-          <a class="release-link" href="https://github.com/Kammahl/kammahl-downloads/releases/tag/v0.1.0-beta.1" target="_blank" rel="noopener" data-i18n="download_notes">Ver notas da versão no GitHub</a>
+    <section id="beta">
+      <div class="shell beta-panel">
+        <div>
+          <div class="section-kicker" data-i18n="beta_kicker">05 // Estado do projeto</div>
+          <h2 data-i18n="beta_title">Uma Beta real, ainda em evolução.</h2>
+          <p class="section-lead" data-i18n="beta_text">Esta versão existe para receber testes e melhorar o Kammahl em computadores e jogos diferentes. Recursos podem mudar e falhas ainda podem acontecer.</p>
         </div>
+        <div class="requirements">
+          <div class="requirement"><strong data-i18n="req_system_label">Sistema:</strong> Windows 10 ou 11, 64 bits</div>
+          <div class="requirement"><strong data-i18n="req_space_label">Espaço:</strong> aproximadamente 900 MB após extrair</div>
+          <div class="requirement"><strong data-i18n="req_online_label">Modelos online:</strong> internet e conta/chave própria</div>
+          <div class="requirement"><strong data-i18n="req_local_label">Modelo local:</strong> Ollama instalado, quando escolhido</div>
+        </div>
+      </div>
+    </section>
 
-        <p style="margin-top:24px;font-size:13px" data-i18n="download_warning">
-          No GitHub, baixe o arquivo Kammahl-0.1.0-beta.1-win-x64-portable.zip. Ignore os arquivos “Source code”, gerados automaticamente pelo GitHub.
-        </p>
+    <section class="download" id="download">
+      <div class="shell">
+        <div class="section-kicker" data-i18n="download_kicker">KAMMAHL // BETA PÚBLICA</div>
+        <h2 data-i18n="download_title">Pronto para conhecer seu novo Companion?</h2>
+        <p class="section-lead" data-i18n="download_text">Baixe a versão portátil, extraia a pasta completa e execute o Kammahl.exe.</p>
+        <div class="download-box">
+          <a class="btn primary" href="https://github.com/Kammahl/kammahl-downloads/releases/download/v0.1.0-beta.1/Kammahl-0.1.0-beta.1-win-x64-portable.zip" data-i18n="download_button">Baixar Kammahl 0.1.0 Beta 1</a>
+          <div class="download-meta"><span>Windows x64</span><span data-i18n="download_portable">Portátil</span><span>~520 MB</span><span data-i18n="download_unsigned">Beta sem assinatura digital</span></div>
+          <a class="release-link" href="https://github.com/Kammahl/kammahl-downloads/releases/tag/v0.1.0-beta.1" target="_blank" rel="noopener" data-i18n="release_notes">Ver arquivos e notas da versão no GitHub</a>
+          <div class="checksum">
+            <div class="checksum-label"><span data-i18n="checksum_label">SHA-256 oficial do ZIP</span><button class="copy-btn" id="copyHash" type="button" data-i18n="copy_hash">Copiar</button></div>
+            <code class="hash" id="hashValue">206C73BF670C7AE6F1305E75A03AECF62CE7684A46E0F34858BC17E06F9635C5</code>
+            <div id="copyStatus" role="status" aria-live="polite"></div>
+          </div>
+          <p class="warning" data-i18n="download_warning">No GitHub, escolha o arquivo “Kammahl-0.1.0-beta.1-win-x64-portable.zip”. Os itens chamados “Source code” não são o programa pronto para uso.</p>
+        </div>
+        <p class="support"><span data-i18n="support_text">Encontrou um problema ou quer enviar uma sugestão?</span> <a href="mailto:kammahl@gmail.com?subject=Feedback%20Kammahl%200.1.0-beta.1" data-i18n="support_link">Fale com o projeto</a>.</p>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell foot">
-      <div><span class="amber">KAMMAHL</span> — <span data-i18n="footer_tagline">Seu companheiro de jogos inteligente.</span></div>
-      <div class="footer-contact"><span data-i18n="contact_label">Contato</span>: <a href="mailto:kammahl@gmail.com">kammahl@gmail.com</a> · © 2026 Kammahl</div>
+    <div class="shell footer-row">
+      <div><span class="amber">KAMMAHL</span> — <span data-i18n="footer_tagline">Nunca mais jogue sozinho.</span></div>
+      <div><a href="mailto:kammahl@gmail.com">kammahl@gmail.com</a> · © 2026 Kammahl</div>
     </div>
   </footer>
 
@@ -449,154 +345,61 @@
     const menuBtn = document.getElementById('menuBtn');
     const nav = document.getElementById('nav');
     const langBtn = document.getElementById('langBtn');
-
-    menuBtn.addEventListener('click', () => nav.classList.toggle('open'));
-    nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+    const copyHash = document.getElementById('copyHash');
+    const copyStatus = document.getElementById('copyStatus');
 
     const translations = {
-      "pt": {
-            "nav_features": "Recursos",
-            "nav_how": "Como funciona",
-            "nav_privacy": "Privacidade",
-            "nav_api": "Chave API",
-            "nav_project": "Download",
-            "eyebrow": "Companion Intelligence System",
-            "slogan": "Nunca mais jogue sozinho.",
-            "tagline": "Seu companheiro de jogos inteligente.",
-            "hero_lead": "Um assistente pensado para jogar ao seu lado: observa o contexto, lembra do que importa, entende sua evolução e ajuda você a tomar decisões sem tirar o controle das suas mãos.",
-            "hero_cta": "Conhecer o Kammahl",
-            "hero_dev": "Em desenvolvimento",
-            "hero_status": "Projeto em desenvolvimento ativo",
-            "features_kicker": "01 // Recursos",
-            "features_title": "Mais contexto. Menos interrupção.",
-            "features_lead": "O Kammahl foi desenhado como um Companion: ele combina visão, memória, voz, conhecimento e ferramentas para ajudar durante a partida sem automatizar o jogo por você.",
-            "feature1_title": "Visão de tela",
-            "feature1_text": "Analisa capturas e elementos visuais para entender o que está acontecendo no jogo.",
-            "feature2_title": "Memória persistente",
-            "feature2_text": "Preserva contexto relevante de sessões, personagens, builds e descobertas.",
-            "feature3_title": "Voz natural",
-            "feature3_text": "Converse sem abandonar a partida, usando entrada e resposta por voz quando desejar.",
-            "feature4_title": "Pesquisa inteligente",
-            "feature4_text": "Consulta conhecimento e fontes externas quando a resposta exige informação atualizada.",
-            "feature5_title": "Análise de build",
-            "feature5_text": "Conecta informações do personagem e ferramentas específicas do jogo para comparar escolhas.",
-            "feature6_title": "Conhecimento vivo",
-            "feature6_text": "Novas descobertas podem atualizar e substituir informações antigas sem apagar o histórico.",
-            "how_kicker": "02 // Como funciona",
-            "how_title": "O jogador continua no comando.",
-            "how_lead": "O Kammahl interpreta informações e recomenda ações. A decisão final continua sendo sua.",
-            "step1_title": "Percebe",
-            "step1_text": "Recebe contexto autorizado da tela, voz, memória e integrações disponíveis.",
-            "step2_title": "Raciocina",
-            "step2_text": "Combina conhecimento do jogo, histórico e ferramentas para avaliar a situação.",
-            "step3_title": "Ajuda",
-            "step3_text": "Explica, compara, alerta ou sugere — sem jogar por você.",
-            "api_kicker": "03 // Chave de API",
-            "api_title": "Sua IA, sua chave.",
-            "api_lead": "Para usar recursos de IA online, o Kammahl precisa de uma chave de API de um provedor compatível. Você adiciona sua própria chave nas configurações do programa.",
-            "api_panel_title": "O que isso significa?",
-            "api_panel_text": "O Kammahl não inclui créditos ilimitados de serviços externos. Custos, limites e disponibilidade dependem do provedor de IA escolhido pelo usuário.",
-            "api_item1": "Adicione a chave de API nas configurações do Kammahl.",
-            "api_item2": "Escolha entre os provedores compatíveis disponíveis no programa.",
-            "api_item3": "O consumo e a cobrança da API são definidos pelo próprio provedor.",
-            "api_item4": "Recursos que funcionem localmente podem não exigir uma chave de API.",
-            "privacy_kicker": "04 // Filosofia",
-            "privacy_title": "Assistente, não bot.",
-            "privacy_lead": "A proposta do Kammahl é ampliar sua compreensão do jogo, não substituir suas decisões. A arquitetura prioriza permissões explícitas, contexto controlado e transparência sobre o que o Companion está usando.",
-            "privacy_item1": "Sem automação de gameplay como objetivo do produto.",
-            "privacy_item2": "Permissões explícitas para recursos sensíveis.",
-            "privacy_item3": "Memória organizada para manter continuidade entre sessões.",
-            "privacy_item4": "Ferramentas e fontes separadas da camada de personalidade.",
-            "final_kicker": "KAMMAHL // EM DESENVOLVIMENTO",
-            "final_title": "Um Companion que aprende o contexto da sua jornada.",
-            "final_text": "O Kammahl ainda está em desenvolvimento. Esta página será atualizada conforme os recursos, versões de teste e formas de acesso forem sendo liberados.",
-            "final_button": "Projeto em evolução",
-            "footer_tagline": "Seu companheiro de jogos inteligente.",
-            "contact_label": "Contato"
+      pt: {
+        skip:'Pular para o conteúdo',nav_features:'Recursos',nav_how:'Como funciona',nav_start:'Começar',nav_privacy:'Privacidade',nav_download:'Download',
+        hero_badge:'Beta pública 0.1.0 disponível',slogan:'Nunca mais jogue sozinho.',tagline:'Seu companheiro de jogos inteligente.',hero_lead:'O Kammahl acompanha sua jornada: entende o que acontece na tela, lembra do que importa e conversa com você por texto ou voz — sempre mantendo o jogador no comando.',hero_download:'Baixar Beta para Windows',hero_discover:'Conhecer o Kammahl',fact_portable:'ZIP portátil',fact_local:'Dados locais por padrão',
+        trust1_title:'Conversa natural',trust1_text:'Texto e voz durante a partida',trust2_title:'Contexto contínuo',trust2_text:'Memória entre sessões',trust3_title:'Controle do jogador',trust3_text:'Permissões explícitas',trust4_title:'Beta portátil',trust4_text:'Dependências principais incluídas',
+        features_kicker:'01 // O Companion',features_title:'Ajuda que entende o momento da partida.',features_lead:'O Kammahl reúne contexto, memória e ferramentas para responder de forma útil sem transformar sua experiência em automação.',feature1_title:'Visão de tela',feature1_text:'Analisa capturas autorizadas para compreender menus, itens e situações visíveis do jogo.',feature2_title:'Memória persistente',feature2_text:'Mantém contexto relevante de conversas, personagens, objetivos, builds e descobertas.',feature3_title:'Conversa por voz',feature3_text:'Escuta e responde em voz alta para você continuar jogando sem depender do teclado.',feature4_title:'Pesquisa com fontes',feature4_text:'Busca informação atual quando necessário e separa pesquisa externa da memória pessoal.',feature5_title:'Ferramentas de jogo',feature5_text:'Usa integrações específicas, como informações de build, para comparar escolhas com mais contexto.',feature6_title:'Conhecimento atualizado',feature6_text:'Novas evidências podem corrigir informações antigas sem apagar o histórico da sua jornada.',
+        how_kicker:'02 // Como funciona',how_title:'O jogador continua no comando.',how_lead:'O Kammahl interpreta informações e recomenda ações. Ele não joga no seu lugar.',step1_title:'Percebe',step1_text:'Recebe apenas o contexto permitido da tela, voz, conversa, memória e integrações.',step2_title:'Raciocina',step2_text:'Combina o momento atual com histórico e ferramentas para avaliar a situação.',step3_title:'Ajuda',step3_text:'Explica, compara, alerta ou sugere. A decisão e a ação continuam sendo suas.',
+        start_kicker:'03 // Primeiros passos',start_title:'Do download à primeira conversa.',start_lead:'A Beta foi preparada para reduzir instalações manuais e deixar o primeiro teste mais simples.',start1_title:'Baixe e extraia',start1_text:'Baixe o ZIP oficial e extraia todo o conteúdo para uma pasta. Não execute o programa de dentro do ZIP.',start2_title:'Abra o Kammahl',start2_text:'Execute Kammahl.exe. O pacote já inclui .NET, Python, Tesseract, reconhecimento de voz e voz neural.',start3_title:'Escolha a inteligência',start3_text:'Conecte o OpenRouter pelo navegador, adicione outra chave compatível ou use Ollama instalado no computador.',start_note:'Importante: esta Beta ainda não possui assinatura digital. O Windows pode exibir o SmartScreen; confirme que o arquivo veio deste site e confira o SHA-256 antes de executar.',
+        privacy_kicker:'04 // Controle e privacidade',privacy_title:'Seus dados, suas permissões, sua escolha de IA.',privacy_lead:'O Kammahl é local-first: perfis, memórias e conversas ficam no computador por padrão. Serviços online são opcionais e usam a conta ou chave escolhida pelo usuário.',ai_title:'Conexão simples com IA',ai_text:'Use “Conectar OpenRouter” para autorizar pelo navegador ou configure outro provedor compatível. O Kammahl não recebe sua senha do serviço.',ai_item1:'Custos e limites são definidos pelo provedor escolhido.',ai_item2:'Ollama pode ser usado para modelos locais compatíveis.',ai_item3:'Nenhuma chave pessoal acompanha o pacote.',privacy_panel_title:'Assistente, não bot',privacy_panel_text:'A proposta é ampliar sua compreensão do jogo, não automatizar gameplay.',privacy_item1:'Capturas para modelos web exigem permissão específica.',privacy_item2:'Chaves informadas pelo usuário são protegidas pelo Windows.',privacy_item3:'Sem leitura de memória do jogo, injeção, cheat ou macro.',
+        beta_kicker:'05 // Estado do projeto',beta_title:'Uma Beta real, ainda em evolução.',beta_text:'Esta versão existe para receber testes e melhorar o Kammahl em computadores e jogos diferentes. Recursos podem mudar e falhas ainda podem acontecer.',req_system_label:'Sistema:',req_space_label:'Espaço:',req_online_label:'Modelos online:',req_local_label:'Modelo local:',
+        download_kicker:'KAMMAHL // BETA PÚBLICA',download_title:'Pronto para conhecer seu novo Companion?',download_text:'Baixe a versão portátil, extraia a pasta completa e execute o Kammahl.exe.',download_button:'Baixar Kammahl 0.1.0 Beta 1',download_portable:'Portátil',download_unsigned:'Beta sem assinatura digital',release_notes:'Ver arquivos e notas da versão no GitHub',checksum_label:'SHA-256 oficial do ZIP',copy_hash:'Copiar',download_warning:'No GitHub, escolha o arquivo “Kammahl-0.1.0-beta.1-win-x64-portable.zip”. Os itens chamados “Source code” não são o programa pronto para uso.',support_text:'Encontrou um problema ou quer enviar uma sugestão?',support_link:'Fale com o projeto',footer_tagline:'Nunca mais jogue sozinho.',copied:'Hash copiado.'
       },
-      "en": {
-            "nav_features": "Features",
-            "nav_how": "How it works",
-            "nav_privacy": "Privacy",
-            "nav_api": "API Key",
-            "nav_project": "Download",
-            "eyebrow": "Companion Intelligence System",
-            "slogan": "Never play alone again.",
-            "tagline": "Your intelligent gaming companion.",
-            "hero_lead": "An assistant designed to play by your side: it understands context, remembers what matters, follows your progress, and helps you make decisions without taking control away from you.",
-            "hero_cta": "Discover Kammahl",
-            "hero_dev": "In development",
-            "hero_status": "Project under active development",
-            "features_kicker": "01 // Features",
-            "features_title": "More context. Fewer interruptions.",
-            "features_lead": "Kammahl is designed as a Companion: it combines vision, memory, voice, knowledge, and tools to help during gameplay without automating the game for you.",
-            "feature1_title": "Screen vision",
-            "feature1_text": "Analyzes captures and visual elements to understand what is happening in the game.",
-            "feature2_title": "Persistent memory",
-            "feature2_text": "Keeps relevant context from sessions, characters, builds, and discoveries.",
-            "feature3_title": "Natural voice",
-            "feature3_text": "Talk without leaving the game, using voice input and spoken responses whenever you want.",
-            "feature4_title": "Intelligent research",
-            "feature4_text": "Consults knowledge and external sources when an answer requires up-to-date information.",
-            "feature5_title": "Build analysis",
-            "feature5_text": "Connects character information with game-specific tools to compare choices.",
-            "feature6_title": "Living knowledge",
-            "feature6_text": "New discoveries can update and supersede older information without erasing the history.",
-            "how_kicker": "02 // How it works",
-            "how_title": "The player stays in control.",
-            "how_lead": "Kammahl interprets information and recommends actions. The final decision remains yours.",
-            "step1_title": "Perceives",
-            "step1_text": "Receives authorized context from the screen, voice, memory, and available integrations.",
-            "step2_title": "Reasons",
-            "step2_text": "Combines game knowledge, history, and tools to evaluate the situation.",
-            "step3_title": "Helps",
-            "step3_text": "Explains, compares, alerts, or suggests — without playing the game for you.",
-            "api_kicker": "03 // API Key",
-            "api_title": "Your AI, your key.",
-            "api_lead": "To use online AI features, Kammahl requires an API key from a compatible provider. You add your own key in the application settings.",
-            "api_panel_title": "What does this mean?",
-            "api_panel_text": "Kammahl does not include unlimited credits for external services. Pricing, limits, and availability depend on the AI provider selected by the user.",
-            "api_item1": "Add your API key in Kammahl settings.",
-            "api_item2": "Choose among the compatible providers available in the application.",
-            "api_item3": "API usage and billing are defined by the provider itself.",
-            "api_item4": "Features that run locally may not require an API key.",
-            "privacy_kicker": "04 // Philosophy",
-            "privacy_title": "Assistant, not a bot.",
-            "privacy_lead": "Kammahl is meant to expand your understanding of the game, not replace your decisions. Its architecture prioritizes explicit permissions, controlled context, and transparency about what the Companion is using.",
-            "privacy_item1": "Gameplay automation is not the product's goal.",
-            "privacy_item2": "Explicit permissions for sensitive resources.",
-            "privacy_item3": "Organized memory to preserve continuity between sessions.",
-            "privacy_item4": "Tools and sources remain separate from the personality layer.",
-            "final_kicker": "KAMMAHL // IN DEVELOPMENT",
-            "final_title": "A Companion that learns the context of your journey.",
-            "final_text": "Kammahl is still in development. This page will be updated as features, test builds, and access options become available.",
-            "final_button": "Project in progress",
-            "footer_tagline": "Your intelligent gaming companion.",
-            "contact_label": "Contact"
+      en: {
+        skip:'Skip to content',nav_features:'Features',nav_how:'How it works',nav_start:'Get started',nav_privacy:'Privacy',nav_download:'Download',
+        hero_badge:'Public Beta 0.1.0 available',slogan:'Never play alone again.',tagline:'Your intelligent gaming companion.',hero_lead:'Kammahl follows your journey: it understands what is happening on screen, remembers what matters, and talks with you through text or voice — while always keeping the player in control.',hero_download:'Download Beta for Windows',hero_discover:'Discover Kammahl',fact_portable:'Portable ZIP',fact_local:'Local data by default',
+        trust1_title:'Natural conversation',trust1_text:'Text and voice during gameplay',trust2_title:'Continuous context',trust2_text:'Memory across sessions',trust3_title:'Player control',trust3_text:'Explicit permissions',trust4_title:'Portable Beta',trust4_text:'Main dependencies included',
+        features_kicker:'01 // The Companion',features_title:'Help that understands the moment.',features_lead:'Kammahl brings context, memory, and tools together to provide useful answers without turning your experience into automation.',feature1_title:'Screen vision',feature1_text:'Analyzes authorized captures to understand visible menus, items, and game situations.',feature2_title:'Persistent memory',feature2_text:'Keeps relevant context from conversations, characters, goals, builds, and discoveries.',feature3_title:'Voice conversation',feature3_text:'Listens and speaks back so you can keep playing without relying on the keyboard.',feature4_title:'Sourced research',feature4_text:'Finds current information when needed and keeps external research separate from personal memory.',feature5_title:'Game tools',feature5_text:'Uses specific integrations, such as build information, to compare choices with more context.',feature6_title:'Updated knowledge',feature6_text:'New evidence can correct old information without erasing the history of your journey.',
+        how_kicker:'02 // How it works',how_title:'The player stays in control.',how_lead:'Kammahl interprets information and recommends actions. It does not play in your place.',step1_title:'Perceives',step1_text:'Receives only the allowed context from the screen, voice, conversation, memory, and integrations.',step2_title:'Reasons',step2_text:'Combines the current moment with history and tools to evaluate the situation.',step3_title:'Helps',step3_text:'Explains, compares, warns, or suggests. The decision and action remain yours.',
+        start_kicker:'03 // Getting started',start_title:'From download to your first conversation.',start_lead:'The Beta was prepared to reduce manual setup and make the first test simpler.',start1_title:'Download and extract',start1_text:'Download the official ZIP and extract everything to a folder. Do not run the application from inside the ZIP.',start2_title:'Open Kammahl',start2_text:'Run Kammahl.exe. The package already includes .NET, Python, Tesseract, speech recognition, and neural voice.',start3_title:'Choose the intelligence',start3_text:'Connect OpenRouter in your browser, add another compatible key, or use Ollama installed on your computer.',start_note:'Important: this Beta is not digitally signed yet. Windows may show SmartScreen; confirm the file came from this website and verify its SHA-256 before running it.',
+        privacy_kicker:'04 // Control and privacy',privacy_title:'Your data, your permissions, your choice of AI.',privacy_lead:'Kammahl is local-first: profiles, memories, and conversations remain on your computer by default. Online services are optional and use the account or key selected by the user.',ai_title:'Simple AI connection',ai_text:'Use “Connect OpenRouter” to authorize through your browser or configure another compatible provider. Kammahl never receives your service password.',ai_item1:'Costs and limits are set by the selected provider.',ai_item2:'Ollama can be used for compatible local models.',ai_item3:'No personal API key is included in the package.',privacy_panel_title:'Assistant, not a bot',privacy_panel_text:'The goal is to expand your understanding of the game, not automate gameplay.',privacy_item1:'Sending captures to web models requires specific permission.',privacy_item2:'User-provided keys are protected by Windows.',privacy_item3:'No game-memory reading, injection, cheating, or macros.',
+        beta_kicker:'05 // Project status',beta_title:'A real Beta, still evolving.',beta_text:'This version exists to gather testing and improve Kammahl across different computers and games. Features may change and issues may still occur.',req_system_label:'System:',req_space_label:'Storage:',req_online_label:'Online models:',req_local_label:'Local model:',
+        download_kicker:'KAMMAHL // PUBLIC BETA',download_title:'Ready to meet your new Companion?',download_text:'Download the portable version, extract the complete folder, and run Kammahl.exe.',download_button:'Download Kammahl 0.1.0 Beta 1',download_portable:'Portable',download_unsigned:'Unsigned Beta',release_notes:'View files and release notes on GitHub',checksum_label:'Official ZIP SHA-256',copy_hash:'Copy',download_warning:'On GitHub, choose “Kammahl-0.1.0-beta.1-win-x64-portable.zip”. Items named “Source code” are not the ready-to-use application.',support_text:'Found a problem or want to send a suggestion?',support_link:'Contact the project',footer_tagline:'Never play alone again.',copied:'Hash copied.'
       }
-};
+    };
 
     let language = localStorage.getItem('kammahl-language') || 'pt';
 
-    function applyLanguage(lang) {
-      language = lang;
-      document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
-      document.title = lang === 'pt'
-        ? 'Kammahl — Nunca mais jogue sozinho'
-        : 'Kammahl — Never play alone again';
-
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        const value = translations[lang][key];
-        if (value !== undefined) el.textContent = value;
+    function applyLanguage(lang){
+      language = translations[lang] ? lang : 'pt';
+      document.documentElement.lang = language === 'pt' ? 'pt-BR' : 'en';
+      document.title = language === 'pt' ? 'Kammahl — Nunca mais jogue sozinho' : 'Kammahl — Never play alone again';
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        const value = translations[language][element.dataset.i18n];
+        if(value !== undefined) element.textContent = value;
       });
-
-      langBtn.textContent = lang === 'pt' ? 'PT / EN' : 'EN / PT';
-      langBtn.setAttribute('aria-label', lang === 'pt' ? 'Switch site to English' : 'Mudar site para português');
-      localStorage.setItem('kammahl-language', lang);
+      langBtn.textContent = language === 'pt' ? 'PT / EN' : 'EN / PT';
+      langBtn.setAttribute('aria-label', language === 'pt' ? 'Mudar o site para inglês' : 'Switch website to Portuguese');
+      menuBtn.setAttribute('aria-label', language === 'pt' ? 'Abrir menu' : 'Open menu');
+      nav.setAttribute('aria-label', language === 'pt' ? 'Navegação principal' : 'Main navigation');
+      document.querySelector('.brand').setAttribute('aria-label', language === 'pt' ? 'Kammahl — início' : 'Kammahl — home');
+      localStorage.setItem('kammahl-language', language);
+      copyStatus.textContent = '';
     }
 
-    langBtn.addEventListener('click', () => applyLanguage(language === 'pt' ? 'en' : 'pt'));
+    function closeMenu(){nav.classList.remove('open');menuBtn.setAttribute('aria-expanded','false')}
+    menuBtn.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(open))});
+    nav.querySelectorAll('a').forEach((link)=>link.addEventListener('click',closeMenu));
+    langBtn.addEventListener('click',()=>applyLanguage(language === 'pt' ? 'en' : 'pt'));
+    copyHash.addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(document.getElementById('hashValue').textContent);copyStatus.textContent=translations[language].copied}
+      catch{copyStatus.textContent=document.getElementById('hashValue').textContent}
+    });
     applyLanguage(language);
   </script>
 </body>
